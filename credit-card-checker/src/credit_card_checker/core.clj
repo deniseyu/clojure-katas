@@ -4,11 +4,21 @@
   [number]
   (count (str number)))
 
+(defn begins-with
+  [digits number]
+  (subs (str number) 0 digits))
+
+(defn in-set
+  [coll number]
+  (contains? coll (read-string number)))
+
 (defn card-type
   "Determines if a card number is amex, mastercard, visa, or discover."
   [number]
-  (cond (= (card-length number) 15) :amex
+  (cond
+        (and (in-set #{34 37} (begins-with 2 number)) (= (card-length number)
+          15)) :amex
         (= (card-length number) 13) :visa
-        (= (subs (str number) 0 4) "6011") :discover
-        (contains? #{51 52 53 54 55} (read-string (subs (str number) 0 2))) :mastercard
+        (= (begins-with 4 number) "6011") :discover
+        (in-set #{51 52 53 54 55} (begins-with 2 number)) :mastercard
         :else :invalid-card-number))
