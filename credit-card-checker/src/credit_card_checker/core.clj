@@ -18,7 +18,9 @@
   (cond
         (and (in-set #{34 37} (begins-with 2 number)) (= (card-length number)
           15)) :amex
-        (= (card-length number) 13) :visa
-        (= (begins-with 4 number) "6011") :discover
-        (in-set #{51 52 53 54 55} (begins-with 2 number)) :mastercard
+        (and (or (= (card-length number) 13) (= (card-length number) 16))
+        (= (begins-with 1 number) "4")) :visa
+        (and (= (begins-with 4 number) "6011") (= (card-length number) 16)) :discover
+        (and (in-set #{51 52 53 54 55} (begins-with 2 number)) (= (card-length
+        number) 16)) :mastercard
         :else :invalid-card-number))
